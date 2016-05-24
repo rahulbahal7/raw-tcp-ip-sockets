@@ -1,0 +1,77 @@
+-------------------------------------------------------------------------------
+LICENSE: Copy this header in case you want to use parts of the code from this
+project.
+-------------------------------------------------------------------------------
+Authors: 
+Rahul Bahal
+Kevin "THE GEORGE" Abraham
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+README
+-------------------------------------------------------------------------------
+
+Approach:
+We implemented the TCP and IP for this project. For this, we first had to get
+the initial TCP handshake right. Next, we formed the GET request for the 
+requested URL and sent it by encapsulating it in our packet.
+Next, we created a method to receive the response from the server and 
+acknowledged the packets accordingly. The retransmisisons are also handled in 
+the code where we request again for a lost packet. We have also implemented a 
+basic congestion window, checksum verification and an application timeout where
+we assume the connection to be failed after 3 mins and let the user know about 
+this. Finally, we end the connection by sending a FIN at the end.
+We verified the downloaded file by comparing it with the original and matching
+their checksums(we used md5sum to validate the checksums).
+We also validate the response code and we are notifying the user in case of a 
+non 200 response.
+
+
+How to execute:
+Note: Since this project deals with Raw socket connections, the user needs to be a 
+ROOT user.
+
+sudo ./rawhttpget [URL] OR ./rawhttpget [URL]
+
+E.g: sudo ./rawhttpget http://david.choffnes.com/classes/cs4700sp16/project4.php
+
+This will download a file "project4.php" or in case of hitting the root of the 
+host(e.g: http://david.coffnes.com/), it will download a file "index.html".
+
+Challenges:
+The core of the application depended upon getting the concept of TCP/IP transfer
+right and surprizingly seeing some behaviours that were slightly different from
+our initial understanding after class, which were interesting.
+1. Biggest challenge was to test the application as a large portion of code 
+change/update was to be done before a new feature could be tested properly.
+2. Second challenge was to correctly compute the field sizes for the headers.
+3. Third challenge was to implement the congestion window size, checksum
+verification and timeout after the code as a small change implemented incorrectly
+would cause a crash.
+4. Fourth challenge was to analyze the packet flow in wireshark. It seems easy
+to use after a few tries but we required sometime to get used to the new tool.
+
+Files:
+The following are the files in our project directory:
+http.py
+tcp.py
+ip.py
+utils.py
+README
+rawhttpget
+Makefile
+
+Known Issue:
+- Need a eth0 port
+- Stress Tests may take sometime to execute. We tested the application with the 
+2 MB file, and the time to download the file under 30 secs and ~5-7 mins for
+10 MB file at our home network. We can imporove it's efficiency and have clear
+plans and timeline to do the same.
+
+References:
+http://www.binarytides.com/raw-socket-programming-in-python-linux/
+http://www.binarytides.com/python-packet-sniffer-code-linux/
+http://www.networksorcery.com/enp/protocol/tcp.htm
+http://stackoverflow.com/questions/24728088/python-parse-http-response-string 
+http://stackoverflow.com/questions/366682/how-to-limit-execution-time-of-a-function-call-in-python
+http://www.programcreek.com/python/example/50987/socket.AF_PACKET
