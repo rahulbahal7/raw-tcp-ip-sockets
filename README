@@ -62,7 +62,7 @@ rawhttpget
 Makefile
 
 Known Issue:
-- Need a eth0 port
+- Need a eth0 port for sending/receiving ethernet frames (Future Scope)
 - Stress Tests may take sometime to execute. We tested the application with the 
 2 MB file, and the time to download the file under 30 secs and ~5-7 mins for
 10 MB file at our home network. We can imporove it's efficiency and have clear
